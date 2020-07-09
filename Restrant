@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ぐるなびTest</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+  </head>
+
+  <body>
+    <h1>通信を使ったプログラムを書いてみる</h1>
+    <div id="shopname"></div>
+    <form name='mainform' method = 'GET'>
+      都道府県
+      <select id = pref>
+        <option value='PREF01'>北海道</option>
+        <option value='PREF02'>青森県</option>
+        <option value='PREF03'>岩手県</option>
+        <option value='PREF04'>宮城県</option>
+        <option value='PREF05'>秋田県</option>
+        <option value='PREF06'>山形県</option>
+        <option value='PREF07'>福島県</option>
+        <option value='PREF08'>茨城県</option>
+        <option value='PREF09'>栃木県</option>
+        <option value='PREF10'>群馬県</option>
+        <option value='PREF11'>埼玉県</option>
+        <option value='PREF12'>千葉県</option>
+        <option value='PREF13'>東京都</option>
+        <option value='PREF14'>神奈川県</option>
+        <option value='PREF15'>新潟県</option>
+        <option value='PREF16'>富山県</option>
+        <option value='PREF17'>石川県</option>
+        <option value='PREF18'>福井県</option>
+        <option value='PREF19'>山梨県</option>
+        <option value='PREF20'>長野県</option>
+        <option value='PREF21'>岐阜県</option>
+        <option value='PREF22'>静岡県</option>
+        <option value='PREF23'>愛知県</option>
+        <option value='PREF24'>三重県</option>
+        <option value='PREF25'>滋賀県</option>
+        <option value='PREF26'>京都府</option>
+        <option value='PREF27'>大阪府</option>
+        <option value='PREF28'>兵庫県</option>
+        <option value='PREF29'>奈良県</option>
+        <option value='PREF30'>和歌山県</option>
+        <option value='PREF31'>鳥取県</option>
+        <option value='PREF32'>島根県</option>
+        <option value='PREF33'>岡山県</option>
+        <option value='PREF34'>広島県</option>
+        <option value='PREF35'>山口県</option>
+        <option value='PREF36'>徳島県</option>
+        <option value='PREF37'>香川県</option>
+        <option value='PREF38'>愛媛県</option>
+        <option value='PREF39'>高知県</option>
+        <option value='PREF40'>福岡県</option>
+        <option value='PREF41'>佐賀県</option>
+        <option value='PREF42'>長崎県</option>
+        <option value='PREF43'>熊本県</option>
+        <option value='PREF44'>大分県</option>
+        <option value='PREF45'>宮崎県</option>
+        <option value='PREF46'>鹿児島県</option>
+        <option value='PREF47'>沖縄県</option>
+      </select><br>
+    </form>
+
+    <button id="search-button">
+        検索
+    </button>
+    <input id="search-text" type="text">
+    
+    <div id="restaurant-informations">
+      <!-- ここに、レストラン情報を表示させる -->
+      <div id = 'shopinfo0'></div>
+      <div id = 'shopinfo1'></div>
+      <div id = 'shopinfo2'></div>
+      <div id = 'shopinfo3'></div>
+      <div id = 'shopinfo4'></div>
+      <div id = 'shopinfo5'></div>
+      <div id = 'shopinfo6'></div>
+      <div id = 'shopinfo7'></div>
+      <div id = 'shopinfo8'></div>
+      <div id = 'shopinfo9'></div>
+    </div>
+
+    <script>
+      const shops = document.getElementById("shopname")
+      const SEARCH_BUTTON = document.getElementById("search-button")
+      const SEARCH_TEXT = document.getElementById("search-text")
+      const SERCH_PREF = document.getElementById("pref")
+      const REST_INFO = document.getElementById("restaurant-informations")
+
+      SEARCH_BUTTON.addEventListener("click", () => seachShop())
+
+      function seachShop(){
+      REST_INFO.innerText = ""
+
+        function reqListener () {
+          var oReq = new XMLHttpRequest();
+          oReq.open("GET", "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=79a08f1a3a339ee2a91ef22f4517af59&&freeword=${SEARCH_TEXT.value}&pref=${SERCH_PREF}");
+          oReq.send();
+          oReq.addEventListener("load", reqListener);
+          JSON.parse(this.responseText)
+          const obj = JSON.parse(this.responseText)
+          console.log(obj.rest)
+          // let arr = obj.rest
+          for (var i = 0; i < obj.rest.length; i++ ) {
+            console.log(obj.rest[i].name)
+            const el = document.createElement("div")
+            el.innerHTML = obj.rest[i].name
+            document.body.appendChild(el);
+          }
+
+        }
+      }
+
+
+
+    </script>
+  </body>
+
+</html>
